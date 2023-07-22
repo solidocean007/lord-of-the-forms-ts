@@ -10,6 +10,8 @@ const phoneNumberErrorMessage = "Invalid Phone Number";
 
 export const FunctionalForm = () => {
   const [firstNameInput, setFirstNameInput]=useState('');
+  const [lastNameInput, setLastNameInput]=useState('');
+  const [userEmail, setUserEmail]=useState('');
 
   return (
     <form
@@ -25,37 +27,50 @@ export const FunctionalForm = () => {
       <FunctionalInput
         labelText={'First Name'}
         inputProps={{
+          type: 'text',
           placeholder: 'Bilbo',
           onChange: (e) => setFirstNameInput(e.target.value),
           value: firstNameInput,
         }}
       />
       <ErrorMessage message={firstNameErrorMessage} show={true} /> 
-      {/* <div className="input-wrap">
-        <label>{"First Name"}:</label>
-        <input placeholder="Bilbo" />
-      </div>
-      <ErrorMessage message={firstNameErrorMessage} show={true} /> */}
+      
 
       {/* last name input */}
-      <div className="input-wrap">
-        <label>{"Last Name"}:</label>
-        <input placeholder="Baggins" />
-      </div>
+      <FunctionalInput
+        labelText={"Last Name"}
+        inputProps={{
+          type: 'text',
+          placeholder: 'Baggins',
+          onChange: (e) => setLastNameInput(e.target.value),
+          value: lastNameInput,
+        }}
+      />
       <ErrorMessage message={lastNameErrorMessage} show={true} />
 
       {/* Email Input */}
-      <div className="input-wrap">
-        <label>{"Email"}:</label>
-        <input placeholder="bilbo-baggins@adventurehobbits.net" />
-      </div>
+      <FunctionalInput
+        labelText={'Email'}
+        inputProps={{
+          type: 'email',
+          placeholder: 'bilbo-baggins@adventurehobbits.net',
+          onChange: (e)=> setUserEmail(e.target.value),
+          value: userEmail,
+        }}
+      />
       <ErrorMessage message={emailErrorMessage} show={true} />
 
       {/* City Input */}
-      <div className="input-wrap">
+      <FunctionalInput
+        labelText={'City'}
+        inputProps={{
+          type: ''
+        }}
+      />
+      {/* <div className="input-wrap">
         <label>{"City"}:</label>
         <input placeholder="Hobbiton" />
-      </div>
+      </div> */}
       <ErrorMessage message={cityErrorMessage} show={true} />
 
       <div className="input-wrap">

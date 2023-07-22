@@ -1,12 +1,22 @@
 import { ComponentProps } from 'react';
 
-export const FunctionalInput = ({ labelText, inputProps }:{labelText: string; inputProps: ComponentProps<'input'>}) => {
+type Option = { value: string, label: string };
+
+export const FunctionalInput = ({ labelText, inputProps, options }:{labelText: string; inputProps: ComponentProps<'input'>; options?: Option[]}) => {
   return (
     <>
-      <div className="input-wrap">
+      {!options? (
+        <div className="input-wrap">
         <label>{labelText}:</label>
-        <input type="text" {...inputProps} />
+        <input {...inputProps} />
       </div>
+      ) : (
+        <select>
+          {options.map(option =>(
+          <option key={option.value} value={option.value}>{option.label}</option>
+          ))}
+      </select>
+      )}
     </>
   );
 };
