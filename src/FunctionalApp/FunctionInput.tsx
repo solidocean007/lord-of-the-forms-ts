@@ -1,11 +1,12 @@
-export const FunctionalInput = ( ) => {
+import { ComponentProps } from 'react';
+
+export const FunctionalInput = ({ labelText, inputProps }:{labelText: string; inputProps: ComponentProps<'input'>}) => {
   return (
     <>
-    <div className="input-wrap">
-        <label>{"First Name"}:</label>
-        <input placeholder="Bilbo" />
+      <div className="input-wrap">
+        <label>{labelText}:</label>
+        <input type="text" {...inputProps} />
       </div>
-      <ErrorMessage message={firstNameErrorMessage} show={true} />
     </>
-  )
-}
+  );
+};
