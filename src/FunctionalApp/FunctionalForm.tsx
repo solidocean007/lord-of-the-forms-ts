@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ErrorMessage } from "../ErrorMessage";
 import { FunctionalInput } from "./FunctionInput";
+import { FunctionalPhoneInput } from "./FunctionalPhoneInput";
 
 const firstNameErrorMessage = "First name must be at least 2 characters long";
 const lastNameErrorMessage = "Last name must be at least 2 characters long";
@@ -9,9 +10,10 @@ const cityErrorMessage = "State is Invalid";
 const phoneNumberErrorMessage = "Invalid Phone Number";
 
 export const FunctionalForm = () => {
-  const [firstNameInput, setFirstNameInput]=useState('');
-  const [lastNameInput, setLastNameInput]=useState('');
-  const [userEmail, setUserEmail]=useState('');
+  const [firstNameInput, setFirstNameInput] = useState("");
+  const [lastNameInput, setLastNameInput] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [userCity, setUserCity] = useState("");
 
   return (
     <form
@@ -24,65 +26,64 @@ export const FunctionalForm = () => {
       </u>
 
       {/* first name input */}
-      <FunctionalInput
-        labelText={'First Name'}
-        inputProps={{
-          type: 'text',
-          placeholder: 'Bilbo',
-          onChange: (e) => setFirstNameInput(e.target.value),
-          value: firstNameInput,
-        }}
-      />
-      <ErrorMessage message={firstNameErrorMessage} show={true} /> 
-      
+      <div className="input-wrap">
+        <FunctionalInput
+          labelText={"First Name"}
+          inputProps={{
+            type: "text",
+            placeholder: "Bilbo",
+            onChange: (e) => setFirstNameInput(e.target.value),
+            value: firstNameInput,
+          }}
+        />
+      </div>
+      <ErrorMessage message={firstNameErrorMessage} show={true} />
 
       {/* last name input */}
-      <FunctionalInput
-        labelText={"Last Name"}
-        inputProps={{
-          type: 'text',
-          placeholder: 'Baggins',
-          onChange: (e) => setLastNameInput(e.target.value),
-          value: lastNameInput,
-        }}
-      />
+      <div className="input-wrap">
+        <FunctionalInput
+          labelText={"Last Name"}
+          inputProps={{
+            type: "text",
+            placeholder: "Baggins",
+            onChange: (e) => setLastNameInput(e.target.value),
+            value: lastNameInput,
+          }}
+        />
+      </div>
       <ErrorMessage message={lastNameErrorMessage} show={true} />
 
       {/* Email Input */}
-      <FunctionalInput
-        labelText={'Email'}
-        inputProps={{
-          type: 'email',
-          placeholder: 'bilbo-baggins@adventurehobbits.net',
-          onChange: (e)=> setUserEmail(e.target.value),
-          value: userEmail,
-        }}
-      />
+      <div className="input-wrap">
+        <FunctionalInput
+          labelText={"Email"}
+          inputProps={{
+            type: "email",
+            placeholder: "bilbo-baggins@adventurehobbits.net",
+            onChange: (e) => setUserEmail(e.target.value),
+            value: userEmail,
+          }}
+        />
+      </div>
       <ErrorMessage message={emailErrorMessage} show={true} />
 
       {/* City Input */}
-      <FunctionalInput
-        labelText={'City'}
-        inputProps={{
-          type: ''
-        }}
-      />
-      {/* <div className="input-wrap">
-        <label>{"City"}:</label>
-        <input placeholder="Hobbiton" />
-      </div> */}
+      <div className="input-wrap">
+        <FunctionalInput
+          labelText={"City"}
+          inputProps={{
+            placeholder: "Hobbiton",
+            onChange: (e) => setUserCity(e.target.value),
+            value: userCity,
+          }}
+        />
+      </div>
       <ErrorMessage message={cityErrorMessage} show={true} />
 
       <div className="input-wrap">
         <label htmlFor="phone">Phone:</label>
         <div id="phone-input-wrap">
-          <input type="text" id="phone-input-1" placeholder="55" />
-          -
-          <input type="text" id="phone-input-2" placeholder="55" />
-          -
-          <input type="text" id="phone-input-3" placeholder="55" />
-          -
-          <input type="text" id="phone-input-4" placeholder="5" />
+          <FunctionalPhoneInput />
         </div>
       </div>
 
