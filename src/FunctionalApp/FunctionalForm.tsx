@@ -2,18 +2,33 @@ import { useState } from "react";
 import { ErrorMessage } from "../ErrorMessage";
 import { FunctionalInput } from "./FunctionInput";
 import { FunctionalPhoneInput } from "./FunctionalPhoneInput";
+import { allCities } from "../utils/all-cities";
+
+//Validation imports
+import { isEmailValid } from "../utils/validations";
 
 const firstNameErrorMessage = "First name must be at least 2 characters long";
 const lastNameErrorMessage = "Last name must be at least 2 characters long";
 const emailErrorMessage = "Email is Invalid";
-const cityErrorMessage = "State is Invalid";
+const cityErrorMessage = "City is Invalid";
 const phoneNumberErrorMessage = "Invalid Phone Number";
 
-export const FunctionalForm = () => {
-  const [firstNameInput, setFirstNameInput] = useState("");
-  const [lastNameInput, setLastNameInput] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userCity, setUserCity] = useState("");
+import { TUserInputType } from "./FunctionalApp";
+
+export const FunctionalForm = ({
+  userInputs,
+  setUserInputs,
+}: {
+  userInputs: TUserInputType;
+}) => {
+  const isFirstNameValid =
+    userInputs.firstNameInput.length >= 2 || userInputs.firstNameInput === "";
+  const isLastNameValid =
+    userInputs.lastNameInput.length >= 2 || userInputs.lastNameInput === "";
+  const isUserEmailGood =
+    isEmailValid(userInputs.userEmailInput) || userInputs.userEmailInput === "";
+  const isCityValid = allCities.includes(userInputs.userCityInput);
+  // const isPhoneNumberValid;
 
   return (
     <form
@@ -32,12 +47,15 @@ export const FunctionalForm = () => {
           inputProps={{
             type: "text",
             placeholder: "Bilbo",
-            onChange: (e) => setFirstNameInput(e.target.value),
-            value: firstNameInput,
+            onChange: (e) =>
+              setUserInputs({ ...userInputs, firstNameInput: e.target.value }),
+            value: userInputs.firstNameInput,
           }}
         />
       </div>
-      <ErrorMessage message={firstNameErrorMessage} show={true} />
+      {!isFirstNameValid && (
+        <ErrorMessage message={firstNameErrorMessage} show={true} />
+      )}
 
       {/* last name input */}
       <div className="input-wrap">
@@ -46,12 +64,14 @@ export const FunctionalForm = () => {
           inputProps={{
             type: "text",
             placeholder: "Baggins",
-            onChange: (e) => setLastNameInput(e.target.value),
-            value: lastNameInput,
+            onChange: (e) => setUserInputs({...userInputs, lastNameInput: e.target.value}),
+            value: userInputs.lastNameInput,
           }}
         />
       </div>
-      <ErrorMessage message={lastNameErrorMessage} show={true} />
+      {!isLastNameValid && (
+        <ErrorMessage message={lastNameErrorMessage} show={true} />
+      )}
 
       {/* Email Input */}
       <div className="input-wrap">
@@ -60,12 +80,14 @@ export const FunctionalForm = () => {
           inputProps={{
             type: "email",
             placeholder: "bilbo-baggins@adventurehobbits.net",
-            onChange: (e) => setUserEmail(e.target.value),
-            value: userEmail,
+            onChange: (e) => setUserInputs({...userInputs, userEmailInput: e.target.value}),
+            value: userInputs.userEmail,
           }}
         />
       </div>
-      <ErrorMessage message={emailErrorMessage} show={true} />
+      {!isUserEmailGood && (
+        <ErrorMessage message={emailErrorMessage} show={true} />
+      )}
 
       {/* City Input */}
       <div className="input-wrap">
@@ -73,16 +95,17 @@ export const FunctionalForm = () => {
           labelText={"City"}
           inputProps={{
             placeholder: "Hobbiton",
-            onChange: (e) => setUserCity(e.target.value),
-            value: userCity,
+            onChange: (e) => setUserInputs({...userInputs, userCityInput: e.target.value}),
+            value: userInputs.userCity,
           }}
+          options={allCities}
         />
       </div>
-      <ErrorMessage message={cityErrorMessage} show={true} />
+      {!isCityValid && <ErrorMessage message={cityErrorMessage} show={true} />}
 
       <div className="input-wrap">
         <label htmlFor="phone">Phone:</label>
-        <div id="phone-input-wrap">
+        <div >
           <FunctionalPhoneInput />
         </div>
       </div>

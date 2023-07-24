@@ -1,7 +1,5 @@
 import { ComponentProps } from "react";
 
-type Option = { value: string; label: string };
-
 export const FunctionalInput = ({
   labelText,
   inputProps,
@@ -9,20 +7,21 @@ export const FunctionalInput = ({
 }: {
   labelText: string;
   inputProps: ComponentProps<"input">;
-  options?: Option[];
+  options?: string[];
 }) => {
   return (
     <>
+      <label htmlFor="">{labelText}</label>
       {!options ? (
         <>
-         <label>{labelText}:</label>
-         <input {...inputProps} />
+          <input {...inputProps} />
         </>
       ) : (
-        <select>
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
+        <select {...inputProps}>
+          <option value="" disabled selected >{inputProps.placeholder}</option>
+          {options.map((cityName) => (
+            <option key={cityName} value={cityName}>
+              {cityName}
             </option>
           ))}
         </select>

@@ -1,68 +1,89 @@
-import { useRef, useState } from "react";
+import { ChangeEventHandler, useRef, useState } from "react";
+
+type TPhoneInputState = [string, string, string, string];
 
 export const FunctionalPhoneInput = () => {
-  const [phoneInputState, setPhoneInputState] = useState(["", "", ""]);
+  const [phoneInputState, setPhoneInputState] = useState<TPhoneInputState>([
+    "",
+    "",
+    "",
+    "",
+  ]);
 
-  const refs = [useRef(), useRef(), useRef(), useRef()];
+  const refs = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+  ];
 
-  const ref0 = refs[0]
-  const ref1 = refs[1]
-  const ref2 = refs[2]
-  const ref3 = refs[3]
+  const ref0 = refs[0];
+  const ref1 = refs[1];
+  const ref2 = refs[2];
+  const ref3 = refs[3];
 
-  const createOnChangeHandler = (index) = (e) => {
-    const lengths = [2, 2, 2, 1];
-    const currentMaxLength = lengths[index];
-    const nexRef =  refs[index + 1];
-    const prevRef =  refs[index - 1];
-    const value = e.target.value;
-    const shouldGoToNextFef = currentMaxLength === value.length && nextRef.current;
-    const shouldGoToPrevRef = value.length === 0;
-    const newState = phoneInputState.map((phoneInput, phoneInputIndex) =>
-      index === phoneInputIndex ? e.target.value : phoneInput
-    )
-    if(shouldGoToNextFef){
-      nexRef.current?.focus()
-    }
+  const createOnChangeHandler =
+    (index: 0 | 1 | 2 | 3): ChangeEventHandler<HTMLInputElement> =>
+    (e) => {
+      const lengths = [2, 2, 2, 1];
+      const currentMaxLength = lengths[index];
+      const nextRef = refs[index + 1];
+      const prevRef = refs[index - 1];
+      const value = e.target.value;
+      const shouldGoToNextFef =
+        currentMaxLength === value.length && nextRef?.current;
+      const shouldGoToPrevRef = value.length === 0;
+      const newState = phoneInputState.map((phoneInput, phoneInputIndex) =>
+        index === phoneInputIndex ? e.target.value : phoneInput
+      ) as TPhoneInputState;
 
-    if(shouldGoToPrevRef){
-      prevRef.current?.focus()
-    }
-    setPhoneInputState(newState);
-  };
+      if (index === 3 && value.length > currentMaxLength) {
+        return;
+      }
+
+      if (shouldGoToNextFef) {
+        nextRef?.current?.focus();
+      }
+
+      if (shouldGoToPrevRef) {
+        prevRef?.current?.focus();
+      }
+      setPhoneInputState(newState);
+    };
 
   return (
-    <div>
-      <label htmlFor="">Phone Number:</label>
-      <div>
-        <input
-          type="text"
-          ref={ref0}
-          value={phoneInputState[0]}
-          onChange={createOnChangeHandler(0)}
-        />
-        -
-        <input
-          type="text"
-          ref={ref1}
-          value={phoneInputState[1]}
-          onChange={createOnChangeHandler(1)}
-        />
-        -
-        <input
-          type="text"
-          ref={ref2}
-          value={phoneInputState[2]}
-          onChange={createOnChangeHandler(2)}
-        />
-        -
-        <input
-          type="text"
-          ref={ref3}
-          value={phoneInputState[3]}
-          onChange={createOnChangeHandler(3)}
-        />
-      </div>
+    <div id="phone-input-wrap">
+      <input
+        id="phone-input-1"
+        type="text"
+        ref={ref0}
+        value={phoneInputState[0]}
+        onChange={createOnChangeHandler(0)}
+      />
+      -
+      <input
+        id="phone-input-2"
+        type="text"
+        ref={ref1}
+        value={phoneInputState[1]}
+        onChange={createOnChangeHandler(1)}
+      />
+      -
+      <input
+        id="phone-input-3"
+        type="text"
+        ref={ref2}
+        value={phoneInputState[2]}
+        onChange={createOnChangeHandler(2)}
+      />
+      -
+      <input
+        id="phone-input-4"
+        type="text"
+        ref={ref3}
+        value={phoneInputState[3]}
+        onChange={createOnChangeHandler(3)}
+      />
     </div>
   );
 };
