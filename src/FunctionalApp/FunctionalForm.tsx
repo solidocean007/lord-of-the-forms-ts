@@ -1,39 +1,49 @@
 import { useState } from "react";
+
 import { ErrorMessage } from "../ErrorMessage";
 import { FunctionalInput } from "./FunctionInput";
 import { FunctionalPhoneInput } from "./FunctionalPhoneInput";
 import { allCities } from "../utils/all-cities";
 
 //Validation imports
-import { isEmailValid } from "../utils/validations";
+import { validateUserInputs } from "../utils/validations";
 
-const firstNameErrorMessage = "First name must be at least 2 characters long";
-const lastNameErrorMessage = "Last name must be at least 2 characters long";
-const emailErrorMessage = "Email is Invalid";
-const cityErrorMessage = "City is Invalid";
-const phoneNumberErrorMessage = "Invalid Phone Number";
 
+//Type Imports
 import { TUserInputType } from "./FunctionalApp";
+
+export type TErrorsOfInputs = {
+  firstNameInputError: string;
+  lastNameInputError: string;
+  emailInputError: string;
+  cityInputError: string;
+  phoneNumberInputError: string;
+}
+
+export type TSetErrorsOfInputs = (errors: TErrorsOfInputs) => void;
 
 export const FunctionalForm = ({
   userInputs,
   setUserInputs,
 }: {
   userInputs: TUserInputType;
+  setUserInputs: (userInputs: TUserInputType) => void;
 }) => {
-  const isFirstNameValid =
-    userInputs.firstNameInput.length >= 2 || userInputs.firstNameInput === "";
-  const isLastNameValid =
-    userInputs.lastNameInput.length >= 2 || userInputs.lastNameInput === "";
-  const isUserEmailGood =
-    isEmailValid(userInputs.userEmailInput) || userInputs.userEmailInput === "";
-  const isCityValid = allCities.includes(userInputs.userCityInput);
-  // const isPhoneNumberValid;
+  
+  const [ errorsOfInputs, setErrorsOfInputs ] = useState<TErrorsOfInputs>({
+    firstNameInputError: '',
+    lastNameInputError: '',
+    emailInputError: '',
+    cityInputError: '',
+    phoneNumberInputError: '',
+})
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        const validationErrors = validateUserInputs(userInputs);
+        setErrorsOfInputs(validationErrors);
       }}
     >
       <u>
@@ -53,9 +63,7 @@ export const FunctionalForm = ({
           }}
         />
       </div>
-      {!isFirstNameValid && (
-        <ErrorMessage message={firstNameErrorMessage} show={true} />
-      )}
+      <ErrorMessage message={errorsOfInputs.firstNameInputError} show={errorsOfInputs.firstNameInputError.length > 0} />
 
       {/* last name input */}
       <div className="input-wrap">
@@ -64,14 +72,13 @@ export const FunctionalForm = ({
           inputProps={{
             type: "text",
             placeholder: "Baggins",
-            onChange: (e) => setUserInputs({...userInputs, lastNameInput: e.target.value}),
+            onChange: (e) =>
+              setUserInputs({ ...userInputs, lastNameInput: e.target.value }),
             value: userInputs.lastNameInput,
           }}
         />
       </div>
-      {!isLastNameValid && (
-        <ErrorMessage message={lastNameErrorMessage} show={true} />
-      )}
+      <ErrorMessage message={errorsOfInputs.lastNameInputError} show={errorsOfInputs.lastNameInputError.length > 0} />
 
       {/* Email Input */}
       <div className="input-wrap">
@@ -80,14 +87,13 @@ export const FunctionalForm = ({
           inputProps={{
             type: "email",
             placeholder: "bilbo-baggins@adventurehobbits.net",
-            onChange: (e) => setUserInputs({...userInputs, userEmailInput: e.target.value}),
-            value: userInputs.userEmail,
+            onChange: (e) =>
+              setUserInputs({ ...userInputs, userEmailInput: e.target.value }),
+            value: userInputs.userEmailInput,
           }}
         />
       </div>
-      {!isUserEmailGood && (
-        <ErrorMessage message={emailErrorMessage} show={true} />
-      )}
+      <ErrorMessage message={errorsOfInputs.emailInputError} show={errorsOfInputs.emailInputError.length > 0} />
 
       {/* City Input */}
       <div className="input-wrap">
@@ -95,22 +101,28 @@ export const FunctionalForm = ({
           labelText={"City"}
           inputProps={{
             placeholder: "Hobbiton",
-            onChange: (e) => setUserInputs({...userInputs, userCityInput: e.target.value}),
-            value: userInputs.userCity,
+          }}
+          selectProps={{
+            onChange: (e) =>
+              setUserInputs({ ...userInputs, userCityInput: e.target.value }),
+            value: userInputs.userCityInput,
           }}
           options={allCities}
         />
       </div>
-      {!isCityValid && <ErrorMessage message={cityErrorMessage} show={true} />}
+      <ErrorMessage message={errorsOfInputs.cityInputError} show={errorsOfInputs.cityInputError.length > 0} />
 
       <div className="input-wrap">
         <label htmlFor="phone">Phone:</label>
-        <div >
-          <FunctionalPhoneInput />
+        <div>
+          <FunctionalPhoneInput
+            userInputs={userInputs}
+            setUserInputs={setUserInputs}
+          />
         </div>
       </div>
 
-      <ErrorMessage message={phoneNumberErrorMessage} show={true} />
+      <ErrorMessage message={errorsOfInputs.phoneNumberInputError} show={errorsOfInputs.phoneNumberInputError.length > 0} />
 
       <input type="submit" value="Submit" />
     </form>

@@ -1,14 +1,16 @@
 import { ChangeEventHandler, useRef, useState } from "react";
+import { TUserInputType } from "./FunctionalApp";
 
-type TPhoneInputState = [string, string, string, string];
+import { TPhoneInputState } from "./FunctionalApp";
 
-export const FunctionalPhoneInput = () => {
-  const [phoneInputState, setPhoneInputState] = useState<TPhoneInputState>([
-    "",
-    "",
-    "",
-    "",
-  ]);
+export const FunctionalPhoneInput = ({
+  userInputs,
+  setUserInputs,
+}: {
+  userInputs: TUserInputType;
+  setUserInputs: (userInputs: TUserInputType) => void;
+}) => {
+  
 
   const refs = [
     useRef<HTMLInputElement>(null),
@@ -33,7 +35,7 @@ export const FunctionalPhoneInput = () => {
       const shouldGoToNextFef =
         currentMaxLength === value.length && nextRef?.current;
       const shouldGoToPrevRef = value.length === 0;
-      const newState = phoneInputState.map((phoneInput, phoneInputIndex) =>
+      const newState = userInputs.userPhoneInput.map((phoneInput, phoneInputIndex) =>
         index === phoneInputIndex ? e.target.value : phoneInput
       ) as TPhoneInputState;
 
@@ -48,7 +50,11 @@ export const FunctionalPhoneInput = () => {
       if (shouldGoToPrevRef) {
         prevRef?.current?.focus();
       }
-      setPhoneInputState(newState);
+      setUserInputs({
+        ...userInputs,
+        userPhoneInput: newState,
+    });
+    
     };
 
   return (
@@ -57,7 +63,7 @@ export const FunctionalPhoneInput = () => {
         id="phone-input-1"
         type="text"
         ref={ref0}
-        value={phoneInputState[0]}
+        value={userInputs.userPhoneInput[0]}
         onChange={createOnChangeHandler(0)}
       />
       -
@@ -65,7 +71,7 @@ export const FunctionalPhoneInput = () => {
         id="phone-input-2"
         type="text"
         ref={ref1}
-        value={phoneInputState[1]}
+        value={userInputs.userPhoneInput[1]}
         onChange={createOnChangeHandler(1)}
       />
       -
@@ -73,7 +79,7 @@ export const FunctionalPhoneInput = () => {
         id="phone-input-3"
         type="text"
         ref={ref2}
-        value={phoneInputState[2]}
+        value={userInputs.userPhoneInput[2]}
         onChange={createOnChangeHandler(2)}
       />
       -
@@ -81,7 +87,7 @@ export const FunctionalPhoneInput = () => {
         id="phone-input-4"
         type="text"
         ref={ref3}
-        value={phoneInputState[3]}
+        value={userInputs.userPhoneInput[3]}
         onChange={createOnChangeHandler(3)}
       />
     </div>
