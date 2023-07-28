@@ -36,16 +36,7 @@ export const validateUserInputs = (
     errors.cityInputError = "City is Invalid";
   }
 
-  // Add phone number validation here if needed
+  // The phone number validation is handled in the FunctionalPhoneInput component
 
   return errors;
 };
-
-
-
-
-// const firstNameErrorMessage = "First name must be at least 2 characters long";
-  // const lastNameErrorMessage = "Last name must be at least 2 characters long";
-  // const emailErrorMessage = "Email is Invalid";
-  // const cityErrorMessage = "City is Invalid";
-  // const phoneNumberErrorMessage = "Invalid Phone Number";

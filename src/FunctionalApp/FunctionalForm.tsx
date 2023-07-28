@@ -8,9 +8,9 @@ import { allCities } from "../utils/all-cities";
 //Validation imports
 import { validateUserInputs } from "../utils/validations";
 
-
 //Type Imports
 import { TUserInputType } from "./FunctionalApp";
+import { TUserInformation } from "../types";
 
 export type TErrorsOfInputs = {
   firstNameInputError: string;
@@ -18,25 +18,36 @@ export type TErrorsOfInputs = {
   emailInputError: string;
   cityInputError: string;
   phoneNumberInputError: string;
-}
+};
 
 export type TSetErrorsOfInputs = (errors: TErrorsOfInputs) => void;
 
 export const FunctionalForm = ({
   userInputs,
   setUserInputs,
+  setProfileData,
 }: {
   userInputs: TUserInputType;
   setUserInputs: (userInputs: TUserInputType) => void;
+  setProfileData: (profileData: TUserInformation) => void;
 }) => {
-  
-  const [ errorsOfInputs, setErrorsOfInputs ] = useState<TErrorsOfInputs>({
-    firstNameInputError: '',
-    lastNameInputError: '',
-    emailInputError: '',
-    cityInputError: '',
-    phoneNumberInputError: '',
-})
+  const [errorsOfInputs, setErrorsOfInputs] = useState<TErrorsOfInputs>({
+    firstNameInputError: "",
+    lastNameInputError: "",
+    emailInputError: "",
+    cityInputError: "",
+    phoneNumberInputError: "",
+  });
+
+  function resetForm() {
+    setUserInputs({
+      firstNameInput: "",
+      lastNameInput: "",
+      userCityInput: "",
+      userEmailInput: "",
+      userPhoneInput: ["", "", "", ""],
+    });
+  }
 
   return (
     <form
@@ -44,6 +55,19 @@ export const FunctionalForm = ({
         e.preventDefault();
         const validationErrors = validateUserInputs(userInputs);
         setErrorsOfInputs(validationErrors);
+
+        // Transform userInputs into UserInformation
+        const newProfileInformation: TUserInformation = {
+          firstName: userInputs.firstNameInput,
+          lastName: userInputs.lastNameInput,
+          email: userInputs.userEmailInput,
+          city: userInputs.userCityInput,
+          phone: userInputs.userPhoneInput.join(""),
+          // ...
+        };
+
+        setProfileData(newProfileInformation);
+        resetForm();
       }}
     >
       <u>
@@ -63,7 +87,10 @@ export const FunctionalForm = ({
           }}
         />
       </div>
-      <ErrorMessage message={errorsOfInputs.firstNameInputError} show={errorsOfInputs.firstNameInputError.length > 0} />
+      <ErrorMessage
+        message={errorsOfInputs.firstNameInputError}
+        show={errorsOfInputs.firstNameInputError.length > 0}
+      />
 
       {/* last name input */}
       <div className="input-wrap">
@@ -78,7 +105,10 @@ export const FunctionalForm = ({
           }}
         />
       </div>
-      <ErrorMessage message={errorsOfInputs.lastNameInputError} show={errorsOfInputs.lastNameInputError.length > 0} />
+      <ErrorMessage
+        message={errorsOfInputs.lastNameInputError}
+        show={errorsOfInputs.lastNameInputError.length > 0}
+      />
 
       {/* Email Input */}
       <div className="input-wrap">
@@ -93,7 +123,10 @@ export const FunctionalForm = ({
           }}
         />
       </div>
-      <ErrorMessage message={errorsOfInputs.emailInputError} show={errorsOfInputs.emailInputError.length > 0} />
+      <ErrorMessage
+        message={errorsOfInputs.emailInputError}
+        show={errorsOfInputs.emailInputError.length > 0}
+      />
 
       {/* City Input */}
       <div className="input-wrap">
@@ -110,7 +143,10 @@ export const FunctionalForm = ({
           options={allCities}
         />
       </div>
-      <ErrorMessage message={errorsOfInputs.cityInputError} show={errorsOfInputs.cityInputError.length > 0} />
+      <ErrorMessage
+        message={errorsOfInputs.cityInputError}
+        show={errorsOfInputs.cityInputError.length > 0}
+      />
 
       <div className="input-wrap">
         <label htmlFor="phone">Phone:</label>
@@ -122,7 +158,10 @@ export const FunctionalForm = ({
         </div>
       </div>
 
-      <ErrorMessage message={errorsOfInputs.phoneNumberInputError} show={errorsOfInputs.phoneNumberInputError.length > 0} />
+      <ErrorMessage
+        message={errorsOfInputs.phoneNumberInputError}
+        show={errorsOfInputs.phoneNumberInputError.length > 0}
+      />
 
       <input type="submit" value="Submit" />
     </form>

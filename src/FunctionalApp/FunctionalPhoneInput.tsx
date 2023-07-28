@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useRef, useState } from "react";
+import { ChangeEventHandler, useRef } from "react";
 import { TUserInputType } from "./FunctionalApp";
 
 import { TPhoneInputState } from "./FunctionalApp";
@@ -10,8 +10,6 @@ export const FunctionalPhoneInput = ({
   userInputs: TUserInputType;
   setUserInputs: (userInputs: TUserInputType) => void;
 }) => {
-  
-
   const refs = [
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
@@ -32,29 +30,30 @@ export const FunctionalPhoneInput = ({
       const nextRef = refs[index + 1];
       const prevRef = refs[index - 1];
       const value = e.target.value;
-      const shouldGoToNextFef =
-        currentMaxLength === value.length && nextRef?.current;
-      const shouldGoToPrevRef = value.length === 0;
-      const newState = userInputs.userPhoneInput.map((phoneInput, phoneInputIndex) =>
-        index === phoneInputIndex ? e.target.value : phoneInput
-      ) as TPhoneInputState;
 
-      if (index === 3 && value.length > currentMaxLength) {
-        return;
-      }
+      if (/^\d+$/.test(value) || value === "") {
+        const shouldGoToNextRef =
+          value.length === currentMaxLength && nextRef?.current;
+        const shouldGoToPrevRef = value.length === 0;
 
-      if (shouldGoToNextFef) {
-        nextRef?.current?.focus();
-      }
+        const newState = userInputs.userPhoneInput.map(
+          (phoneInput, phoneInputIndex) =>
+            index === phoneInputIndex ? value : phoneInput
+        ) as TPhoneInputState;
 
-      if (shouldGoToPrevRef) {
-        prevRef?.current?.focus();
+        if (shouldGoToNextRef) {
+          nextRef?.current?.focus();
+        }
+
+        if (shouldGoToPrevRef) {
+          prevRef?.current?.focus();
+        }
+
+        setUserInputs({
+          ...userInputs,
+          userPhoneInput: newState,
+        });
       }
-      setUserInputs({
-        ...userInputs,
-        userPhoneInput: newState,
-    });
-    
     };
 
   return (
