@@ -2,15 +2,8 @@ import { useState } from "react";
 import { ProfileInformation } from "../ProfileInformation";
 import { FunctionalForm } from "./FunctionalForm";
 import { TUserInformation } from "../types";
+import { TUserInputType } from "../types";
 
-export type TPhoneInputState = [string, string, string, string];
-export type TUserInputType = {
-  firstNameInput: string;
-  lastNameInput: string;
-  userEmailInput: string;
-  userCityInput: string;
-  userPhoneInput: TPhoneInputState;
-};
 
 
 export const FunctionalApp = () => {

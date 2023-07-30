@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { ErrorMessage } from "../ErrorMessage";
 import { FunctionalInput } from "./FunctionInput";
 import { FunctionalPhoneInput } from "./FunctionalPhoneInput";
@@ -9,7 +8,7 @@ import { allCities } from "../utils/all-cities";
 import { validateUserInputs } from "../utils/validations";
 
 //Type Imports
-import { TUserInputType } from "./FunctionalApp";
+import { TUserInputType } from "../types";
 import { TUserInformation } from "../types";
 
 export type TErrorsOfInputs = {

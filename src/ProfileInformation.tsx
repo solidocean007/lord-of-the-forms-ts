@@ -28,6 +28,13 @@ export const ProfileInformation = ({
     );
   }
   const { email, firstName, lastName, phone, city } = userData;
+
+  // const phoneNumberFormatted = phone.slice
+  let phoneNumberFormatted = '';
+  for(let i = 0; i < 7; i++){
+    (i > 0 && i % 2)? phoneNumberFormatted+=phone[i]+'-': phoneNumberFormatted += phone[i];
+  }
+
   return (
     <>
       <u>
@@ -39,7 +46,7 @@ export const ProfileInformation = ({
         <InfoRow label="Last Name" value={lastName} />
         <InfoRow label="City" value={city} />
         {/* You will need to format the string "nnnnnnn" as "nn-nn-nn-n" */}
-        <InfoRow label="Phone" value={phone} />
+        <InfoRow label="Phone" value={phoneNumberFormatted} />
       </div>
     </>
   );

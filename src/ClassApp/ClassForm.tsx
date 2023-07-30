@@ -1,16 +1,54 @@
 import { Component } from "react";
 import { ErrorMessage } from "../ErrorMessage";
+import { ClassInput } from "./ClassInput";
+import { validateUserInputs } from "../utils/validations";
 
-const firstNameErrorMessage = "First name must be at least 2 characters long";
-const lastNameErrorMessage = "Last name must be at least 2 characters long";
-const emailErrorMessage = "Email is Invalid";
-const cityErrorMessage = "State is Invalid";
-const phoneNumberErrorMessage = "Invalid Phone Number";
+//Type imports
+import { TUserInputType } from "../types";
+import { TUserInformation } from "../types";
 
-export class ClassForm extends Component {
+type ClassFormProps = {
+  userInputs: TUserInputType;
+  setUserInputs: (userInputs: TUserInputType) => void;
+  setProfileData: (profileData: TUserInformation | null) => void;
+};
+
+export class ClassForm extends Component<ClassFormProps> {
+  constructor(props: ClassFormProps) {
+    super(props);
+    this.state = {
+      errorsOfInputs: {
+        firstNameInputError: "",
+        lastNameInputError: "",
+        emailInputError: "",
+        cityInputError: "",
+        phoneNumberInputError: "",
+      },
+    };
+  }
+
   render() {
     return (
-      <form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          const validationErrors = validateUserInputs(userInputs);
+          setErrorsOfInputs(validationErrors);
+
+          // Transform userInputs into UserInformation
+          const newProfileInformation: TUserInformation = {
+            firstName: userInputs.firstNameInput,
+            lastName: userInputs.lastNameInput,
+            email: userInputs.userEmailInput,
+            city: userInputs.userCityInput,
+            phone: userInputs.userPhoneInput.join(""),
+            // ...
+          };
+
+          setProfileData(newProfileInformation);
+          resetForm();
+        }}
+      >
         <u>
           <h3>User Information Form</h3>
         </u>
