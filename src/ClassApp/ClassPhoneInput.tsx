@@ -2,18 +2,18 @@ import { ChangeEventHandler, useRef } from "react";
 import { TUserInputType } from "../types";
 import { TPhoneInputState } from "../types";
 
+import { validateUserInputs } from "../utils/validations";
+import { TErrorsOfInputs } from "../FunctionalApp/FunctionalForm";
 
 export const ClassPhoneInput = ({
   userInputs,
   setUserInputs,
+  setErrorsOfInputs,
 }: {
   userInputs: TUserInputType;
   setUserInputs: (userInputs: TUserInputType) => void;
+  setErrorsOfInputs: (errors: TErrorsOfInputs) => void;
 }) => {
-
-
-
-
   const refs = [
     useRef<HTMLInputElement>(null),
     useRef<HTMLInputElement>(null),
@@ -57,6 +57,13 @@ export const ClassPhoneInput = ({
           ...userInputs,
           userPhoneInput: newState,
         });
+
+        // Validate input after setting state and update error state
+        const validationErrors = validateUserInputs({
+          ...userInputs,
+          userPhoneInput: newState,
+        });
+        setErrorsOfInputs(validationErrors);
       }
     };
 
