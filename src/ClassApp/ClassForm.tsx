@@ -54,6 +54,7 @@ export class ClassForm extends Component<ClassFormProps> {
 
     return (
       <form
+        noValidate
         onSubmit={(e) => {
           e.preventDefault();
           const validationErrors = validateUserInputs(userInputs);

@@ -51,6 +51,7 @@ export const FunctionalForm = ({
 
   return (
     <form
+      noValidate
       onSubmit={(e) => {
         e.preventDefault();
         setTriedSubmit(true);

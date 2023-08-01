@@ -1,4 +1,5 @@
 import { TUserInputType } from "../types";
+import { TPhoneInputState } from "../types";
 import { TErrorsOfInputs } from "../FunctionalApp/FunctionalForm";
 import { allCities } from "../utils/all-cities";
 
@@ -8,36 +9,56 @@ export function isEmailValid(emailAddress: string) {
   return !!emailAddress.match(regex);
 }
 
+export const isCityValid = (
+  userInput: string,
+  citiesAvailable: string[]
+): boolean => {
+  return citiesAvailable.includes(userInput);
+};
+
+// Add this function in validations.ts
+export const isPhoneValid = (userPhoneInput: TPhoneInputState) => {
+  const phoneNumberString = userPhoneInput.join("");
+  return /^\d{7}$/.test(phoneNumberString);
+};
+
 export const validateUserInputs = (
   userInputs: TUserInputType
 ): TErrorsOfInputs => {
-  
   const errors: TErrorsOfInputs = {
     firstNameInputError: "",
     lastNameInputError: "",
     emailInputError: "",
     cityInputError: "",
-    phoneNumberInputError: ""
-  }
+    phoneNumberInputError: "",
+  };
 
-  if (userInputs.firstNameInput.length < 2 || userInputs.firstNameInput === "") {
-    errors.firstNameInputError = "First name must be at least 2 characters long";
+  if (
+    userInputs.firstNameInput.length < 2 ||
+    userInputs.firstNameInput === ""
+  ) {
+    errors.firstNameInputError =
+      "First name must be at least 2 characters long";
   }
 
   if (userInputs.lastNameInput.length < 2 || userInputs.lastNameInput === "") {
     errors.lastNameInputError = "Last name must be at least 2 characters long";
   }
 
-  if (!isEmailValid(userInputs.userEmailInput) || userInputs.userEmailInput === "") {
+  if (
+    !isEmailValid(userInputs.userEmailInput) ||
+    userInputs.userEmailInput === ""
+  ) {
     errors.emailInputError = "Email is Invalid";
   }
 
-  if (!allCities.includes(userInputs.userCityInput)) {
+  if (!isCityValid(userInputs.userCityInput, allCities)) {
     errors.cityInputError = "City is Invalid";
   }
 
-  // The phone number validation is handled in the FunctionalPhoneInput component
+  if (!isPhoneValid(userInputs.userPhoneInput)) {
+    errors.phoneNumberInputError = "Phone Number is Invalid";
+  }
 
   return errors;
 };
-
