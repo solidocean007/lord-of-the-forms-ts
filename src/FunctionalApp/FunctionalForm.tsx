@@ -53,10 +53,10 @@ export const FunctionalForm = ({
       onSubmit={(e) => {
         e.preventDefault();
         setTriedSubmit(true);
-        const validationErrors = validateUserInputs(userInputs); 
-        setErrorsOfInputs(validationErrors); 
+        const validationErrors = validateUserInputs(userInputs);
+        setErrorsOfInputs(validationErrors);
 
-        const errorValues = Object.values(validationErrors); 
+        const errorValues = Object.values(validationErrors);
         if (errorValues.some((error) => error !== "")) {
           alert("Bad data input");
           return;

@@ -3,7 +3,6 @@ import { ClassApp } from "./ClassApp/ClassApp";
 import { FunctionalApp } from "./FunctionalApp/FunctionalApp";
 import { allCities } from "./utils/all-cities";
 
-
 function App() {
   return (
     <>

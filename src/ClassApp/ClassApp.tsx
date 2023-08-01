@@ -34,7 +34,7 @@ export class ClassApp extends Component<Record<string, never>, State> {
 
   setUserInputs = (userInputs: TUserInputType) => {
     this.setState({ userInputs });
-  }
+  };
 
   setProfileData = (profileData: TUserInformation | null) => {
     this.setState({ profileData });
@@ -45,9 +45,7 @@ export class ClassApp extends Component<Record<string, never>, State> {
     return (
       <>
         <h2>Class</h2>
-        <ProfileInformation
-          userData={profileData}
-        />
+        <ProfileInformation userData={profileData} />
         <ClassForm
           userInputs={userInputs}
           setUserInputs={this.setUserInputs}

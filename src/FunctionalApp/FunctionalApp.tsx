@@ -4,8 +4,6 @@ import { FunctionalForm } from "./FunctionalForm";
 import { TUserInformation } from "../types";
 import { TUserInputType } from "../types";
 
-
-
 export const FunctionalApp = () => {
   const [profileData, setProfileData] = useState<TUserInformation | null>(null);
   const [userInputs, setUserInputs] = useState<TUserInputType>({
@@ -13,14 +11,18 @@ export const FunctionalApp = () => {
     lastNameInput: "",
     userEmailInput: "",
     userCityInput: "",
-    userPhoneInput: ['','','',''],
+    userPhoneInput: ["", "", "", ""],
   });
 
   return (
     <>
       <h2>Functional</h2>
       <ProfileInformation userData={profileData} />
-      <FunctionalForm userInputs={userInputs} setUserInputs={setUserInputs} setProfileData={setProfileData}/>
+      <FunctionalForm
+        userInputs={userInputs}
+        setUserInputs={setUserInputs}
+        setProfileData={setProfileData}
+      />
     </>
   );
 };

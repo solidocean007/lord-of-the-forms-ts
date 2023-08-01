@@ -94,7 +94,10 @@ export class ClassForm extends Component<ClassFormProps> {
               type: "text",
               placeholder: "Bilbo",
               onChange: (e) => {
-                setUserInputs({ ...userInputs, firstNameInput: e.target.value });
+                setUserInputs({
+                  ...userInputs,
+                  firstNameInput: e.target.value,
+                });
                 const validationErrors = validateUserInputs({
                   ...userInputs,
                   firstNameInput: e.target.value,
@@ -142,7 +145,10 @@ export class ClassForm extends Component<ClassFormProps> {
               type: "email",
               placeholder: "bilbo-baggins@adventurehobbits.net",
               onChange: (e) => {
-                setUserInputs({ ...userInputs, userEmailInput: e.target.value });
+                setUserInputs({
+                  ...userInputs,
+                  userEmailInput: e.target.value,
+                });
                 const validationErrors = validateUserInputs({
                   ...userInputs,
                   userEmailInput: e.target.value,
