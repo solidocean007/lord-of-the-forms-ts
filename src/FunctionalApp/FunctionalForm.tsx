@@ -2,10 +2,8 @@ import { useState } from "react";
 import { ErrorMessage } from "../ErrorMessage";
 import { FunctionalInput } from "./FunctionInput";
 import { FunctionalPhoneInput } from "./FunctionalPhoneInput";
-import { allCities } from "../utils/all-cities";
-
-//Validation imports
 import { validateUserInputs } from "../utils/validations";
+import { allCities } from "../utils/all-cities";
 
 //Type Imports
 import { TUserInputType } from "../types";
@@ -55,18 +53,16 @@ export const FunctionalForm = ({
       onSubmit={(e) => {
         e.preventDefault();
         setTriedSubmit(true);
-        const validationErrors = validateUserInputs(userInputs); // declares a variable to an object of error properties of empty strings or error messages.
-        setErrorsOfInputs(validationErrors); // sets the state of errorsOfInputs with the messages or empty strings.
+        const validationErrors = validateUserInputs(userInputs); 
+        setErrorsOfInputs(validationErrors); 
 
-        const errorValues = Object.values(validationErrors); // returns an array of the error messages from the validation of the userInputs
+        const errorValues = Object.values(validationErrors); 
         if (errorValues.some((error) => error !== "")) {
-          // checks if any of the strings in the errorValues array are not empty
-          alert("Bad data input"); // alert if any string in errorValues is not empty
+          alert("Bad data input");
           return;
         }
 
         const newProfileInformation: TUserInformation = {
-          // declare an object of inputs from the user this happens if the previous function doesn't produce any errors.
           firstName: userInputs.firstNameInput,
           lastName: userInputs.lastNameInput,
           email: userInputs.userEmailInput,
@@ -75,10 +71,9 @@ export const FunctionalForm = ({
         };
 
         if (Object.values(validationErrors).every((error) => error === "")) {
-          // if all of the values in the error object are empty..
-          setProfileData(newProfileInformation); // setProfileData with the object of inputs declared with newProfileInformation
+          setProfileData(newProfileInformation);
         }
-        resetForm(); // reset the form regardless
+        resetForm();
       }}
     >
       <u>
@@ -94,8 +89,6 @@ export const FunctionalForm = ({
             placeholder: "Bilbo",
             onChange: (e) => {
               setUserInputs({ ...userInputs, firstNameInput: e.target.value });
-
-              // Validate input on change and update error state
               const validationErrors = validateUserInputs({
                 ...userInputs,
                 firstNameInput: e.target.value,
@@ -119,8 +112,6 @@ export const FunctionalForm = ({
             placeholder: "Baggins",
             onChange: (e) => {
               setUserInputs({ ...userInputs, lastNameInput: e.target.value });
-
-              // Validate input on change and update error state
               const validationErrors = validateUserInputs({
                 ...userInputs,
                 lastNameInput: e.target.value,
@@ -144,8 +135,6 @@ export const FunctionalForm = ({
             placeholder: "bilbo-baggins@adventurehobbits.net",
             onChange: (e) => {
               setUserInputs({ ...userInputs, userEmailInput: e.target.value });
-
-              // Validate input on change and update error state
               const validationErrors = validateUserInputs({
                 ...userInputs,
                 userEmailInput: e.target.value,
@@ -170,8 +159,6 @@ export const FunctionalForm = ({
           selectProps={{
             onChange: (e) => {
               setUserInputs({ ...userInputs, userCityInput: e.target.value });
-
-              // Validate input on change and update error state
               const validationErrors = validateUserInputs({
                 ...userInputs,
                 userCityInput: e.target.value,

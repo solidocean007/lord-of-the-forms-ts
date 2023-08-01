@@ -32,7 +32,7 @@ export const ProfileInformation = ({
   // const phoneNumberFormatted = phone.slice
   let phoneNumberFormatted = '';
   for(let i = 0; i < 7; i++){
-    (i > 0 && i % 2)? phoneNumberFormatted+=phone[i]+'-': phoneNumberFormatted += phone[i];
+    (i > 0 && i % 2)? phoneNumberFormatted += phone[i]+'-': phoneNumberFormatted += phone[i];
   }
 
   return (

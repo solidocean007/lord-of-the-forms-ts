@@ -43,4 +43,4 @@ export class ClassInput extends Component<ClassInputProps>{
       </>
     );
   }
-};
+}

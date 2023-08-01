@@ -93,11 +93,14 @@ export class ClassForm extends Component<ClassFormProps> {
             inputProps={{
               type: "text",
               placeholder: "Bilbo",
-              onChange: (e) =>
-                setUserInputs({
+              onChange: (e) => {
+                setUserInputs({ ...userInputs, firstNameInput: e.target.value });
+                const validationErrors = validateUserInputs({
                   ...userInputs,
                   firstNameInput: e.target.value,
-                }),
+                });
+                this.setErrorsOfInputs(validationErrors);
+              },
               value: userInputs.firstNameInput,
             }}
           />
@@ -114,8 +117,14 @@ export class ClassForm extends Component<ClassFormProps> {
             inputProps={{
               type: "text",
               placeholder: "Baggins",
-              onChange: (e) =>
-                setUserInputs({ ...userInputs, lastNameInput: e.target.value }),
+              onChange: (e) => {
+                setUserInputs({ ...userInputs, lastNameInput: e.target.value });
+                const validationErrors = validateUserInputs({
+                  ...userInputs,
+                  lastNameInput: e.target.value,
+                });
+                this.setErrorsOfInputs(validationErrors);
+              },
               value: userInputs.lastNameInput,
             }}
           />
@@ -132,11 +141,14 @@ export class ClassForm extends Component<ClassFormProps> {
             inputProps={{
               type: "email",
               placeholder: "bilbo-baggins@adventurehobbits.net",
-              onChange: (e) =>
-                setUserInputs({
+              onChange: (e) => {
+                setUserInputs({ ...userInputs, userEmailInput: e.target.value });
+                const validationErrors = validateUserInputs({
                   ...userInputs,
                   userEmailInput: e.target.value,
-                }),
+                });
+                this.setErrorsOfInputs(validationErrors);
+              },
               value: userInputs.userEmailInput,
             }}
           />
@@ -154,8 +166,14 @@ export class ClassForm extends Component<ClassFormProps> {
               placeholder: "Hobbiton",
             }}
             selectProps={{
-              onChange: (e) =>
-                setUserInputs({ ...userInputs, userCityInput: e.target.value }),
+              onChange: (e) => {
+                setUserInputs({ ...userInputs, userCityInput: e.target.value });
+                const validationErrors = validateUserInputs({
+                  ...userInputs,
+                  userCityInput: e.target.value,
+                });
+                this.setErrorsOfInputs(validationErrors);
+              },
               value: userInputs.userCityInput,
             }}
             options={allCities}
@@ -172,6 +190,7 @@ export class ClassForm extends Component<ClassFormProps> {
             <ClassPhoneInput
               userInputs={userInputs}
               setUserInputs={setUserInputs}
+              setErrorsOfInputs={this.setErrorsOfInputs}
             />
           </div>
         </div>

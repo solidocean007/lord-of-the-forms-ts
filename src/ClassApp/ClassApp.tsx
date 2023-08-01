@@ -4,13 +4,13 @@ import { ProfileInformation } from "../ProfileInformation";
 import { TUserInformation } from "../types";
 import { TUserInputType } from "../types";
 
-const defaultUser: TUserInformation = {
-  email: "default@default.com",
-  firstName: "Default",
-  lastName: "Default",
-  phone: "1234567",
-  city: "Hobbiton",
-};
+// const defaultUser: TUserInformation = {
+//   email: "default@default.com",
+//   firstName: "Default",
+//   lastName: "Default",
+//   phone: "1234567",
+//   city: "Hobbiton",
+// };
 
 type State = {
   profileData: TUserInformation | null;
@@ -46,7 +46,7 @@ export class ClassApp extends Component<Record<string, never>, State> {
       <>
         <h2>Class</h2>
         <ProfileInformation
-          userData={profileData || defaultUser}
+          userData={profileData}
         />
         <ClassForm
           userInputs={userInputs}
