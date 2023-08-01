@@ -17,8 +17,8 @@ type State = {
   userInputs: TUserInputType;
 };
 
-export class ClassApp extends Component<{}, State> {
-  constructor(props: {}) {
+export class ClassApp extends Component<Record<string, never>, State> {
+  constructor(props: Record<string, never>) {
     super(props);
     this.state = {
       profileData: null,

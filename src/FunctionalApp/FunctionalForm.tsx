@@ -30,6 +30,7 @@ export const FunctionalForm = ({
   setUserInputs: (userInputs: TUserInputType) => void;
   setProfileData: (profileData: TUserInformation) => void;
 }) => {
+  const [triedSubmit, setTriedSubmit] = useState(false);
   const [errorsOfInputs, setErrorsOfInputs] = useState<TErrorsOfInputs>({
     firstNameInputError: "",
     lastNameInputError: "",
@@ -52,21 +53,31 @@ export const FunctionalForm = ({
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        const validationErrors = validateUserInputs(userInputs);
-        setErrorsOfInputs(validationErrors);
+        setTriedSubmit(true);
+        const validationErrors = validateUserInputs(userInputs); // declares a variable to an object of error properties of empty strings or error messages.
+        setErrorsOfInputs(validationErrors); // sets the state of errorsOfInputs with the messages or empty strings.
 
-        // Transform userInputs into UserInformation
+        const errorValues = Object.values(validationErrors); // returns an array of the error messages from the validation of the userInputs
+        if (errorValues.some((error) => error !== "")) {
+          // checks if any of the strings in the errorValues array are not empty
+          alert("Bad data input"); // alert if any string in errorValues is not empty
+          return;
+        }
+
         const newProfileInformation: TUserInformation = {
+          // declare an object of inputs from the user this happens if the previous function doesn't produce any errors.
           firstName: userInputs.firstNameInput,
           lastName: userInputs.lastNameInput,
           email: userInputs.userEmailInput,
           city: userInputs.userCityInput,
           phone: userInputs.userPhoneInput.join(""),
-          // ...
         };
 
-        setProfileData(newProfileInformation);
-        resetForm();
+        if (Object.values(validationErrors).every((error) => error === "")) {
+          // if all of the values in the error object are empty..
+          setProfileData(newProfileInformation); // setProfileData with the object of inputs declared with newProfileInformation
+        }
+        resetForm(); // reset the form regardless
       }}
     >
       <u>
@@ -80,15 +91,22 @@ export const FunctionalForm = ({
           inputProps={{
             type: "text",
             placeholder: "Bilbo",
-            onChange: (e) =>
-              setUserInputs({ ...userInputs, firstNameInput: e.target.value }),
-            value: userInputs.firstNameInput,
+            onChange: (e) => {
+              setUserInputs({ ...userInputs, firstNameInput: e.target.value });
+
+              // Validate input on change and update error state
+              const validationErrors = validateUserInputs({
+                ...userInputs,
+                firstNameInput: e.target.value,
+              });
+              setErrorsOfInputs(validationErrors);
+            },
           }}
         />
       </div>
       <ErrorMessage
         message={errorsOfInputs.firstNameInputError}
-        show={errorsOfInputs.firstNameInputError.length > 0}
+        show={triedSubmit && errorsOfInputs.firstNameInputError.length > 0}
       />
 
       {/* last name input */}
@@ -98,15 +116,22 @@ export const FunctionalForm = ({
           inputProps={{
             type: "text",
             placeholder: "Baggins",
-            onChange: (e) =>
-              setUserInputs({ ...userInputs, lastNameInput: e.target.value }),
-            value: userInputs.lastNameInput,
+            onChange: (e) => {
+              setUserInputs({ ...userInputs, lastNameInput: e.target.value });
+
+              // Validate input on change and update error state
+              const validationErrors = validateUserInputs({
+                ...userInputs,
+                lastNameInput: e.target.value,
+              });
+              setErrorsOfInputs(validationErrors);
+            },
           }}
         />
       </div>
       <ErrorMessage
         message={errorsOfInputs.lastNameInputError}
-        show={errorsOfInputs.lastNameInputError.length > 0}
+        show={triedSubmit && errorsOfInputs.lastNameInputError.length > 0}
       />
 
       {/* Email Input */}
@@ -116,15 +141,22 @@ export const FunctionalForm = ({
           inputProps={{
             type: "email",
             placeholder: "bilbo-baggins@adventurehobbits.net",
-            onChange: (e) =>
-              setUserInputs({ ...userInputs, userEmailInput: e.target.value }),
-            value: userInputs.userEmailInput,
+            onChange: (e) => {
+              setUserInputs({ ...userInputs, userEmailInput: e.target.value });
+
+              // Validate input on change and update error state
+              const validationErrors = validateUserInputs({
+                ...userInputs,
+                userEmailInput: e.target.value,
+              });
+              setErrorsOfInputs(validationErrors);
+            },
           }}
         />
       </div>
       <ErrorMessage
         message={errorsOfInputs.emailInputError}
-        show={errorsOfInputs.emailInputError.length > 0}
+        show={triedSubmit && errorsOfInputs.emailInputError.length > 0}
       />
 
       {/* City Input */}
@@ -135,16 +167,23 @@ export const FunctionalForm = ({
             placeholder: "Hobbiton",
           }}
           selectProps={{
-            onChange: (e) =>
-              setUserInputs({ ...userInputs, userCityInput: e.target.value }),
-            value: userInputs.userCityInput,
+            onChange: (e) => {
+              setUserInputs({ ...userInputs, userCityInput: e.target.value });
+
+              // Validate input on change and update error state
+              const validationErrors = validateUserInputs({
+                ...userInputs,
+                userCityInput: e.target.value,
+              });
+              setErrorsOfInputs(validationErrors);
+            },
           }}
           options={allCities}
         />
       </div>
       <ErrorMessage
         message={errorsOfInputs.cityInputError}
-        show={errorsOfInputs.cityInputError.length > 0}
+        show={triedSubmit && errorsOfInputs.cityInputError.length > 0}
       />
 
       <div className="input-wrap">
@@ -153,13 +192,14 @@ export const FunctionalForm = ({
           <FunctionalPhoneInput
             userInputs={userInputs}
             setUserInputs={setUserInputs}
+            setErrorsOfInputs={setErrorsOfInputs}
           />
         </div>
       </div>
 
       <ErrorMessage
         message={errorsOfInputs.phoneNumberInputError}
-        show={errorsOfInputs.phoneNumberInputError.length > 0}
+        show={triedSubmit && errorsOfInputs.phoneNumberInputError.length > 0}
       />
 
       <input type="submit" value="Submit" />

@@ -1,7 +1,9 @@
 import { Component } from "react";
 import { ErrorMessage } from "../ErrorMessage";
 import { ClassInput } from "./ClassInput";
+import { ClassPhoneInput } from "./ClassPhoneInput";
 import { validateUserInputs } from "../utils/validations";
+import { allCities } from "../utils/all-cities";
 
 //Type imports
 import { TUserInputType } from "../types";
@@ -13,29 +15,56 @@ type ClassFormProps = {
   setProfileData: (profileData: TUserInformation | null) => void;
 };
 
+type TErrorsOfInputs = {
+  firstNameInputError: string;
+  lastNameInputError: string;
+  emailInputError: string;
+  cityInputError: string;
+  phoneNumberInputError: string;
+};
+
 export class ClassForm extends Component<ClassFormProps> {
-  constructor(props: ClassFormProps) {
-    super(props);
-    this.state = {
-      errorsOfInputs: {
-        firstNameInputError: "",
-        lastNameInputError: "",
-        emailInputError: "",
-        cityInputError: "",
-        phoneNumberInputError: "",
-      },
-    };
-  }
+  state = {
+    triedSubmit: false,
+    errorsOfInputs: {
+      firstNameInputError: "",
+      lastNameInputError: "",
+      emailInputError: "",
+      cityInputError: "",
+      phoneNumberInputError: "",
+    },
+  };
+
+  setErrorsOfInputs = (errorsOfInputs: TErrorsOfInputs) => {
+    this.setState({ errorsOfInputs });
+  };
 
   render() {
+    const { userInputs, setUserInputs, setProfileData } = this.props;
+
+    function resetForm() {
+      setUserInputs({
+        firstNameInput: "",
+        lastNameInput: "",
+        userCityInput: "",
+        userEmailInput: "",
+        userPhoneInput: ["", "", "", ""],
+      });
+    }
+
     return (
       <form
         onSubmit={(e) => {
           e.preventDefault();
           const validationErrors = validateUserInputs(userInputs);
-          setErrorsOfInputs(validationErrors);
+          this.setErrorsOfInputs(validationErrors);
 
-          // Transform userInputs into UserInformation
+          const errorValues = Object.values(validationErrors);
+          if (errorValues.some((error) => error !== "")) {
+            alert("Bad data input");
+            return;
+          }
+
           const newProfileInformation: TUserInformation = {
             firstName: userInputs.firstNameInput,
             lastName: userInputs.lastNameInput,
@@ -45,7 +74,10 @@ export class ClassForm extends Component<ClassFormProps> {
             // ...
           };
 
-          setProfileData(newProfileInformation);
+          if (Object.values(validationErrors).every((error) => error === "")) {
+            setProfileData(newProfileInformation);
+          }
+
           resetForm();
         }}
       >
@@ -55,46 +87,98 @@ export class ClassForm extends Component<ClassFormProps> {
 
         {/* first name input */}
         <div className="input-wrap">
-          <label>{"First Name"}:</label>
-          <input placeholder="Bilbo" />
+          <ClassInput
+            labelText={"First Name"}
+            inputProps={{
+              type: "text",
+              placeholder: "Bilbo",
+              onChange: (e) =>
+                setUserInputs({
+                  ...userInputs,
+                  firstNameInput: e.target.value,
+                }),
+              value: userInputs.firstNameInput,
+            }}
+          />
         </div>
-        <ErrorMessage message={firstNameErrorMessage} show={true} />
+        <ErrorMessage
+          message={this.state.errorsOfInputs.firstNameInputError}
+          show={this.state.errorsOfInputs.firstNameInputError.length > 0}
+        />
 
         {/* last name input */}
         <div className="input-wrap">
-          <label>{"Last Name"}:</label>
-          <input placeholder="Baggins" />
+          <ClassInput
+            labelText={"Last Name"}
+            inputProps={{
+              type: "text",
+              placeholder: "Baggins",
+              onChange: (e) =>
+                setUserInputs({ ...userInputs, lastNameInput: e.target.value }),
+              value: userInputs.lastNameInput,
+            }}
+          />
         </div>
-        <ErrorMessage message={lastNameErrorMessage} show={true} />
+        <ErrorMessage
+          message={this.state.errorsOfInputs.lastNameInputError}
+          show={this.state.errorsOfInputs.lastNameInputError.length > 0}
+        />
 
         {/* Email Input */}
         <div className="input-wrap">
-          <label>{"Email"}:</label>
-          <input placeholder="bilbo-baggins@adventurehobbits.net" />
+          <ClassInput
+            labelText={"Email"}
+            inputProps={{
+              type: "email",
+              placeholder: "bilbo-baggins@adventurehobbits.net",
+              onChange: (e) =>
+                setUserInputs({
+                  ...userInputs,
+                  userEmailInput: e.target.value,
+                }),
+              value: userInputs.userEmailInput,
+            }}
+          />
         </div>
-        <ErrorMessage message={emailErrorMessage} show={true} />
+        <ErrorMessage
+          message={this.state.errorsOfInputs.emailInputError}
+          show={this.state.errorsOfInputs.emailInputError.length > 0}
+        />
 
         {/* City Input */}
         <div className="input-wrap">
-          <label>{"City"}:</label>
-          <input placeholder="Hobbiton" />
+          <ClassInput
+            labelText={"City"}
+            inputProps={{
+              placeholder: "Hobbiton",
+            }}
+            selectProps={{
+              onChange: (e) =>
+                setUserInputs({ ...userInputs, userCityInput: e.target.value }),
+              value: userInputs.userCityInput,
+            }}
+            options={allCities}
+          />
         </div>
-        <ErrorMessage message={cityErrorMessage} show={true} />
+        <ErrorMessage
+          message={this.state.errorsOfInputs.cityInputError}
+          show={this.state.errorsOfInputs.cityInputError.length > 0}
+        />
 
         <div className="input-wrap">
           <label htmlFor="phone">Phone:</label>
-          <div id="phone-input-wrap">
-            <input type="text" id="phone-input-1" placeholder="55" />
-            -
-            <input type="text" id="phone-input-2" placeholder="55" />
-            -
-            <input type="text" id="phone-input-3" placeholder="55" />
-            -
-            <input type="text" id="phone-input-4" placeholder="5" />
+          <div>
+            <ClassPhoneInput
+              userInputs={userInputs}
+              setUserInputs={setUserInputs}
+            />
           </div>
         </div>
 
-        <ErrorMessage message={phoneNumberErrorMessage} show={true} />
+        <ErrorMessage
+          message={this.state.errorsOfInputs.phoneNumberInputError}
+          show={this.state.errorsOfInputs.phoneNumberInputError.length > 0}
+        />
 
         <input type="submit" value="Submit" />
       </form>

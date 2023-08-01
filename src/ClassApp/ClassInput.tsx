@@ -1,20 +1,26 @@
-import React, { ComponentProps } from "react";
-import { render } from "react-dom";
+import { Component } from "react";
 
-export class ClassInput extends React.Component ({
-  labelText,
-  inputProps,
-  selectProps,
-  options,
-}: {
+type ClassInputProps = {
   labelText: string;
-  inputProps: ComponentProps<"input">;
-  selectProps?: ComponentProps<"select">;
+  inputProps: {
+    type?: string;
+    placeholder: string;
+    onChange?: (e:  React.ChangeEvent<HTMLInputElement>) => void;
+    value?: string;
+  };
+  selectProps?: {
+    onChange: (e:  React.ChangeEvent<HTMLSelectElement>) => void;
+    value: string;
+  };
   options?: string[];
-}) {
+};
 
+export class ClassInput extends Component<ClassInputProps>{
+  //...
 
   render(){
+    const {labelText, inputProps, selectProps, options } = this.props;
+
     return (
       <>
         <label htmlFor="">{labelText}</label>

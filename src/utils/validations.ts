@@ -1,4 +1,4 @@
-import { TUserInputType } from "../FunctionalApp/FunctionalApp";
+import { TUserInputType } from "../types";
 import { TErrorsOfInputs } from "../FunctionalApp/FunctionalForm";
 import { allCities } from "../utils/all-cities";
 
@@ -20,15 +20,15 @@ export const validateUserInputs = (
     phoneNumberInputError: ""
   }
 
-  if (userInputs.firstNameInput.length < 2 && userInputs.firstNameInput !== "") {
+  if (userInputs.firstNameInput.length < 2 || userInputs.firstNameInput === "") {
     errors.firstNameInputError = "First name must be at least 2 characters long";
   }
 
-  if (userInputs.lastNameInput.length < 2 && userInputs.lastNameInput !== "") {
+  if (userInputs.lastNameInput.length < 2 || userInputs.lastNameInput === "") {
     errors.lastNameInputError = "Last name must be at least 2 characters long";
   }
 
-  if (!isEmailValid(userInputs.userEmailInput) && userInputs.userEmailInput !== "") {
+  if (!isEmailValid(userInputs.userEmailInput) || userInputs.userEmailInput === "") {
     errors.emailInputError = "Email is Invalid";
   }
 
@@ -40,3 +40,4 @@ export const validateUserInputs = (
 
   return errors;
 };
+
