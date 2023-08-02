@@ -13,8 +13,10 @@ export const isCityValid = (
   userInput: string,
   citiesAvailable: string[]
 ): boolean => {
-  return citiesAvailable.includes(userInput);
+  const lowerCaseInput = userInput.toLowerCase();
+  return citiesAvailable.some(city => city.toLowerCase() === lowerCaseInput);
 };
+
 
 // Add this function in validations.ts
 export const isPhoneValid = (userPhoneInput: TPhoneInputState) => {

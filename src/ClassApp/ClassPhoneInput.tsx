@@ -35,6 +35,10 @@ export const ClassPhoneInput = ({
       const prevRef = refs[index - 1];
       const value = e.target.value;
 
+      if (index === 3 && value.length > currentMaxLength) {
+        return;
+      }
+
       if (/^\d+$/.test(value) || value === "") {
         const shouldGoToNextRef =
           value.length === currentMaxLength && nextRef?.current;

@@ -3,7 +3,7 @@ import { ErrorMessage } from "../ErrorMessage";
 import { ClassInput } from "./ClassInput";
 import { ClassPhoneInput } from "./ClassPhoneInput";
 import { validateUserInputs } from "../utils/validations";
-import { allCities } from "../utils/all-cities";
+import { ClassCityInput } from "./ClassCityInput";
 
 //Type imports
 import { TUserInputType } from "../types";
@@ -57,6 +57,7 @@ export class ClassForm extends Component<ClassFormProps> {
         noValidate
         onSubmit={(e) => {
           e.preventDefault();
+          this.setState({ triedSubmit: true });
           const validationErrors = validateUserInputs(userInputs);
           this.setErrorsOfInputs(validationErrors);
 
@@ -110,7 +111,7 @@ export class ClassForm extends Component<ClassFormProps> {
         </div>
         <ErrorMessage
           message={this.state.errorsOfInputs.firstNameInputError}
-          show={this.state.errorsOfInputs.firstNameInputError.length > 0}
+          show={this.state.triedSubmit && this.state.errorsOfInputs.firstNameInputError.length > 0}
         />
 
         {/* last name input */}
@@ -134,7 +135,7 @@ export class ClassForm extends Component<ClassFormProps> {
         </div>
         <ErrorMessage
           message={this.state.errorsOfInputs.lastNameInputError}
-          show={this.state.errorsOfInputs.lastNameInputError.length > 0}
+          show={this.state.triedSubmit && this.state.errorsOfInputs.lastNameInputError.length > 0}
         />
 
         {/* Email Input */}
@@ -161,17 +162,15 @@ export class ClassForm extends Component<ClassFormProps> {
         </div>
         <ErrorMessage
           message={this.state.errorsOfInputs.emailInputError}
-          show={this.state.errorsOfInputs.emailInputError.length > 0}
+          show={this.state.triedSubmit && this.state.errorsOfInputs.emailInputError.length > 0}
         />
 
         {/* City Input */}
         <div className="input-wrap">
-          <ClassInput
+          <ClassCityInput
             labelText={"City"}
             inputProps={{
               placeholder: "Hobbiton",
-            }}
-            selectProps={{
               onChange: (e) => {
                 setUserInputs({ ...userInputs, userCityInput: e.target.value });
                 const validationErrors = validateUserInputs({
@@ -180,14 +179,12 @@ export class ClassForm extends Component<ClassFormProps> {
                 });
                 this.setErrorsOfInputs(validationErrors);
               },
-              value: userInputs.userCityInput,
             }}
-            options={allCities}
           />
         </div>
         <ErrorMessage
           message={this.state.errorsOfInputs.cityInputError}
-          show={this.state.errorsOfInputs.cityInputError.length > 0}
+          show={this.state.triedSubmit && this.state.errorsOfInputs.cityInputError.length > 0}
         />
 
         <div className="input-wrap">
@@ -203,7 +200,7 @@ export class ClassForm extends Component<ClassFormProps> {
 
         <ErrorMessage
           message={this.state.errorsOfInputs.phoneNumberInputError}
-          show={this.state.errorsOfInputs.phoneNumberInputError.length > 0}
+          show={this.state.triedSubmit && this.state.errorsOfInputs.phoneNumberInputError.length > 0}
         />
 
         <input type="submit" value="Submit" />

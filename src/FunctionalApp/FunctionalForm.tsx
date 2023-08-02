@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { ErrorMessage } from "../ErrorMessage";
 import { FunctionalInput } from "./FunctionInput";
+import { FunctionalCityInput } from "./FunctionalCityInput";
 import { FunctionalPhoneInput } from "./FunctionalPhoneInput";
 import { validateUserInputs } from "../utils/validations";
-import { allCities } from "../utils/all-cities";
 
 //Type Imports
 import { TUserInputType } from "../types";
@@ -151,12 +151,10 @@ export const FunctionalForm = ({
 
       {/* City Input */}
       <div className="input-wrap">
-        <FunctionalInput
+        <FunctionalCityInput
           labelText={"City"}
           inputProps={{
             placeholder: "Hobbiton",
-          }}
-          selectProps={{
             onChange: (e) => {
               setUserInputs({ ...userInputs, userCityInput: e.target.value });
               const validationErrors = validateUserInputs({
@@ -166,7 +164,6 @@ export const FunctionalForm = ({
               setErrorsOfInputs(validationErrors);
             },
           }}
-          options={allCities}
         />
       </div>
       <ErrorMessage
